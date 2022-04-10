@@ -1,8 +1,17 @@
-apiVersion: 2019-12-01
+apiVersion: 2021-07-01
 location: eastus
 name: k49-itemtracker
 properties:
   containers:
+  - name: item-tracker-frontend
+    properties:
+      image: kinich49/item-tracker-frontend:latest-azure
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 4
+      ports:
+      - port: 8080
   - name: item-tracker-backend
     properties:
       image: kinich49/item-tracker-backend:latest-azure
@@ -11,22 +20,15 @@ properties:
           cpu: 1
           memoryInGb: 4
       ports:
-      - port: 80
-      - port: 8080
-  - name: item-tracker-frontend
-    properties:
-      image: kinich49/item-tracker-frontend:latest-azure
-      resources:
-        requests:
-          cpu: 1
-          memoryInGb: 4
+      - port: 8081
   osType: Linux
   ipAddress:
+    dnsNameLabel: k49-itemtracker
     type: Public
     ports:
     - protocol: tcp
-      port: 80
-    - protocol: tcp
       port: 8080
+    - protocol: tcp
+      port: 8081
 tags: {app: item-tracker}
 type: Microsoft.ContainerInstance/containerGroups
